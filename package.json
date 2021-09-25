@@ -1,5 +1,5 @@
 {
-  "name": "plugin.advanced-scene-manager.locking",
+  "name": "plugin.asm.locking",
   "version": "1.0.0",
   "displayName": "Locking collections and scenes",
   "description": "This package provides support for locking scenes and collections to Advanced Scene Manager.",
