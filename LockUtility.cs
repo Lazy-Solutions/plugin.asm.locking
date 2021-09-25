@@ -7,7 +7,7 @@ using System;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace AdvancedSceneManager.Support.Locking
+namespace AdvancedSceneManager.Plugin.Locking
 {
 
     /// <summary>

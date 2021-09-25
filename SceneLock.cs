@@ -11,7 +11,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using Scene = UnityEngine.SceneManagement.Scene;
 
-namespace AdvancedSceneManager.Support.Locking
+namespace AdvancedSceneManager.Plugin.Locking
 {
 
     /// <summary>Responsible for adding lock buttons to scenes in heirarchy window, and preventing save on locked scenes.</summary>

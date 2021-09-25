@@ -4,7 +4,7 @@ using AdvancedSceneManager.Editor;
 using UnityEditor;
 using UnityEngine.UIElements;
 
-namespace AdvancedSceneManager.Support.Locking
+namespace AdvancedSceneManager.Plugin.Locking
 {
 
     public static class UI

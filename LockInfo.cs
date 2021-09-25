@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-namespace AdvancedSceneManager.Support.Locking
+namespace AdvancedSceneManager.Plugin.Locking
 {
 
     /// <summary>An info class for locking objects. Has no effect by itself. See <see cref="LockUtility"/>.</summary>
