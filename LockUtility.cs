@@ -2,7 +2,6 @@
 
 using AdvancedSceneManager.Editor.Utility;
 using AdvancedSceneManager.Utility;
-using Lazy.Utility;
 using System;
 using UnityEditor;
 using Object = UnityEngine.Object;
@@ -21,18 +20,17 @@ namespace AdvancedSceneManager.Plugin.Locking
         const string Key = "Locking";
 
         [InitializeOnLoadMethod]
-        static void OnLoad() =>
-            CoroutineUtility.Run(when: () => SceneManager.assetManagement.isInitialized, action: () =>
-            {
+        static void OnLoad()
+        {
 
-                foreach (var scene in SceneManager.assetManagement.scenes)
-                    OnLockChanged(scene.path, SceneDataUtility.Get<LockInfo>(scene, Key)?.isEnabled ?? false);
+            foreach (var scene in SceneManager.assetManagement.scenes)
+                OnLockChanged(scene.path, SceneDataUtility.Get<LockInfo>(scene, Key)?.isEnabled ?? false);
 
-                SceneLock.OnLoad();
-                CollectionLock.OnLoad();
-                UI.OnLoad();
+            SceneLock.OnLoad();
+            CollectionLock.OnLoad();
+            UI.OnLoad();
 
-            });
+        }
 
         //Called from Lock(), Unlock() methods
         internal static void OnLockChanged(string path, bool locked)
@@ -40,9 +38,6 @@ namespace AdvancedSceneManager.Plugin.Locking
 
             //Make sure SceneManagerWindow knows what collections are locked, so that all lockable ui elements can be disabled, if collection locked
             Editor.VisualElementExtensions.SetLocked(path, locked);
-
-            //Prevent cross-scene references from saving in locked scenes
-            CrossSceneReferenceUtility.Ignore(path, locked);
 
         }
 
