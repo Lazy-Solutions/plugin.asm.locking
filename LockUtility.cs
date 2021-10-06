@@ -3,6 +3,7 @@
 using AdvancedSceneManager.Editor.Utility;
 using AdvancedSceneManager.Utility;
 using System;
+using System.Linq;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
@@ -23,7 +24,7 @@ namespace AdvancedSceneManager.Plugin.Locking
         static void OnLoad()
         {
 
-            foreach (var scene in SceneManager.assetManagement.scenes)
+            foreach (var scene in SceneManager.assetManagement.scenes.Where(s => s).ToArray())
                 OnLockChanged(scene.path, SceneDataUtility.Get<LockInfo>(scene, Key)?.isEnabled ?? false);
 
             SceneLock.OnLoad();
