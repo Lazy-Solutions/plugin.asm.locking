@@ -34,9 +34,14 @@ namespace AdvancedSceneManager.Plugin.Locking
 
         static GUIContent GetTooltip(string path)
         {
+
+            if (string.IsNullOrWhiteSpace(path))
+                return GUIContent.none;
+
             if (!toggleTooltips.ContainsKey(path))
                 toggleTooltips.Add(path, new GUIContent("", tooltip: LockUtility.GetTooltipString(path)));
             return toggleTooltips[path];
+
         }
 
         static bool OnLockButtonGUI(Rect position, Scene scene, ref float width)
