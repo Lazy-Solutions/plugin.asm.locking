@@ -34,12 +34,17 @@ namespace AdvancedSceneManager.Plugin.Locking
 
         static GUIContent GetTooltip(string path)
         {
+
+            if (string.IsNullOrWhiteSpace(path))
+                return GUIContent.none;
+
             if (!toggleTooltips.ContainsKey(path))
                 toggleTooltips.Add(path, new GUIContent("", tooltip: LockUtility.GetTooltipString(path)));
             return toggleTooltips[path];
+
         }
 
-        static bool OnLockButtonGUI(Rect position, Scene scene)
+        static bool OnLockButtonGUI(Scene scene)
         {
 
             var isLocked = LockUtility.IsLocked(scene.path);
@@ -54,24 +59,23 @@ namespace AdvancedSceneManager.Plugin.Locking
                 warning = new GUIContent(EditorGUIUtility.IconContent("console.warnicon.sml").image, tooltip: "This scene is locked, but has modifications, you will be asked to save scene as a new scene when saving.");
 
             EditorGUI.BeginChangeCheck();
-            GUI.Toggle(position, isLocked, GetTooltip(scene.path), style);
+            _ = GUILayout.Toggle(isLocked, GetTooltip(scene.path), style);
             if (EditorGUI.EndChangeCheck())
-                if (isLocked)
-                    LockUtility.PromptUnlock(scene.path);
-                else
-                    LockUtility.PromptLock(scene.path);
+                _ = isLocked
+                    ? LockUtility.PromptUnlock(scene.path)
+                    : LockUtility.PromptLock(scene.path);
 
             return true;
 
         }
 
-        static bool OnWarningGUI(Rect position, Scene scene)
+        static bool OnWarningGUI(Scene scene)
         {
 
             var isLocked = LockUtility.IsLocked(scene.path);
             if (isLocked && scene.isDirty)
             {
-                GUI.Button(position, warning, GUIStyle.none);
+                _ = GUILayout.Button(warning, GUIStyle.none);
                 return true;
             }
 
@@ -101,7 +105,7 @@ namespace AdvancedSceneManager.Plugin.Locking
                     cancel: "Cancel");
 
                 var data = File.ReadAllText(path);
-                scenesToRestore.Set(scene, (data, path));
+                _ = scenesToRestore.Set(scene, (data, path));
 
                 if (saveAs)
                     SaveAs(scene);
@@ -122,7 +126,7 @@ namespace AdvancedSceneManager.Plugin.Locking
             if (scenesToRestore.TryGetValue(scene, out var data))
             {
 
-                scenesToRestore.Remove(scene);
+                _ = scenesToRestore.Remove(scene);
                 if (!File.Exists(data.path))
                     return;
 
@@ -137,10 +141,9 @@ namespace AdvancedSceneManager.Plugin.Locking
 
                     if (EditorSceneManager.sceneCount == 1)
                         DefaultSceneUtility.EnsureOpen();
-
-                    CrossSceneReferenceUtility.ClearScene(scene);
+                    CrossSceneReferenceUtilityProxy.ClearScene(scene);
                     var path = scene.path;
-                    EditorSceneManager.CloseScene(scene, true);
+                    _ = EditorSceneManager.CloseScene(scene, true);
 
                     File.WriteAllText(data.path, data.data);
                     AssetDatabase.ImportAsset(path);
@@ -154,9 +157,9 @@ namespace AdvancedSceneManager.Plugin.Locking
 
                     //Reactivate previously active scene
                     if (activeScene.IsValid())
-                        EditorSceneManager.SetActiveScene(activeScene);
+                        _ = EditorSceneManager.SetActiveScene(activeScene);
                     else
-                        EditorSceneManager.SetActiveScene(newScene);
+                        _ = EditorSceneManager.SetActiveScene(newScene);
 
                     //Ugh, this seems to be the only way to hide 'cross-scene references not supported' warning
                     //by unity that is produced some time after this code has run...
@@ -174,7 +177,7 @@ namespace AdvancedSceneManager.Plugin.Locking
             var logEntries = Type.GetType("UnityEditor.LogEntries,UnityEditor.dll");
 
             var clearMethod = logEntries?.GetMethod("Clear", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-            clearMethod?.Invoke(null, null);
+            _ = clearMethod?.Invoke(null, null);
 
         }
 
