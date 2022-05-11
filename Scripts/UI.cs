@@ -1,6 +1,6 @@
 ﻿#if UNITY_EDITOR
 
-using AdvancedSceneManager.Editor.Utility;
+using AdvancedSceneManager.Editor;
 using UnityEditor;
 using UnityEngine.UIElements;
 
@@ -18,7 +18,7 @@ namespace AdvancedSceneManager.Plugin.Locking
 
         internal static void OnLoad()
         {
-            SettingsTab.instance.Add(
+            SettingsTab.Settings.Add(() =>
                 new Toggle("Display lock buttons:").
                     Setup(e =>
                     {
@@ -28,7 +28,7 @@ namespace AdvancedSceneManager.Plugin.Locking
                     defaultValue: showButtons,
                     tooltip: "Enable or disable lock buttons (does not disable functionality, saved in EditorPrefs)"
                     ),
-                header: SettingsTab.instance.DefaultHeaders.Appearance);
+                header: SettingsTab.Settings.DefaultHeaders.Appearance);
         }
 
     }

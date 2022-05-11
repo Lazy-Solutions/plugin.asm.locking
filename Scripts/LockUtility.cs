@@ -38,7 +38,7 @@ namespace AdvancedSceneManager.Plugin.Locking
         {
 
             //Make sure SceneManagerWindow knows what collections are locked, so that all lockable ui elements can be disabled, if collection locked
-            VisualElementExtensions.SetLocked(path, locked);
+            Editor.VisualElementExtensions.SetLocked(path, locked);
 
         }
 
